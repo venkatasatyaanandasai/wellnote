@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f5">
+    <title>Wellnote | Patient records</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Wellnote home">
+          <span class="brand-mark" aria-hidden="true">W</span>
+          <span>wellnote</span>
+        </a>
+        <span class="local-badge"><span aria-hidden="true"></span> Local workspace</span>
+      </header>
+
+      <section class="intro">
+        <p class="eyebrow">PATIENT MANAGEMENT</p>
+        <h1>Health records, made clear.</h1>
+        <p class="intro-copy">A private local workspace for contact details and lab measurements.</p>
+      </section>
+
+      <section class="notice" role="note">
+        <strong>For information only.</strong>
+        Remarks are not a diagnosis or medical advice. Confirm units and results with a qualified
+        clinician. Records stay in this local SQLite database; only measurements are sent to the
+        external AI provider when configured.
+      </section>
+
+      <section class="content-grid">
+        <aside class="form-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">RECORD DETAILS</p>
+              <h2 id="form-title">Add a patient</h2>
+            </div>
+            <span class="step-mark" aria-hidden="true">+</span>
+          </div>
+          <p class="helper">Fields marked <span aria-hidden="true">*</span> are required.</p>
+
+          <form id="patient-form" novalidate>
+            <input id="patient-id" type="hidden">
+            <label for="full-name">Full name <span>*</span></label>
+            <input id="full-name" name="full_name" autocomplete="name" required minlength="2" maxlength="120">
+
+            <label for="dob">Date of birth <span>*</span></label>
+            <input id="dob" name="dob" placeholder="DD/MM/YYYY" inputmode="numeric" required>
+            <p class="field-hint">Use DD/MM/YYYY. Dots are also accepted for the supplied test data.</p>
+
+            <label for="email">Email address <span>*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="254">
+
+            <div class="measurements-title">
+              <span>Blood test values</span>
+              <span class="unit-note">mg/dL · g/dL · mg/dL</span>
+            </div>
+            <div class="measurement-grid">
+              <div>
+                <label for="glucose">Glucose <span>*</span></label>
+                <input id="glucose" name="glucose" type="number" step="any" min="0" required>
+              </div>
+              <div>
+                <label for="haemoglobin">Haemoglobin <span>*</span></label>
+                <input id="haemoglobin" name="haemoglobin" type="number" step="any" min="0" required>
+              </div>
+              <div class="wide-field">
+                <label for="cholesterol">Total cholesterol <span>*</span></label>
+                <input id="cholesterol" name="cholesterol" type="number" step="any" min="0" required>
+              </div>
+            </div>
+            <p class="field-hint">Confirm measurement units with the laboratory report.</p>
+
+            <div id="form-error" class="form-error" role="alert" hidden></div>
+            <div class="form-actions">
+              <button id="submit-button" class="button button-primary" type="submit">Save patient</button>
+              <button id="cancel-edit" class="button button-quiet" type="button" hidden>Cancel edit</button>
+            </div>
+          </form>
+        </aside>
+
+        <section class="records-panel" aria-labelledby="records-heading">
+          <div class="records-heading">
+            <div>
+              <p class="eyebrow">YOUR WORKSPACE</p>
+              <h2 id="records-heading">Patient records <span id="record-count" class="count">0</span></h2>
+            </div>
+            <button id="refresh-button" class="button button-outline" type="button">Refresh</button>
+          </div>
+
+          <div id="page-message" class="page-message" role="status" hidden></div>
+          <div id="loading" class="empty-state">Loading records…</div>
+          <div id="empty-state" class="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">+</span>
+            <strong>No patient records yet</strong>
+            <span>Add the first record using the form.</span>
+          </div>
+          <div id="table-wrap" class="table-wrap" hidden>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Patient</th>
+                  <th scope="col">Measurements</th>
+                  <th scope="col">Remarks</th>
+                  <th scope="col"><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="records-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <footer>
+        <span>Wellnote · Local patient record demo</span>
+        <span>Not for emergency or clinical decision-making</span>
+      </footer>
+    </main>
+  </body>
+</html>
